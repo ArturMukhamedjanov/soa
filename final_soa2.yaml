@@ -1,0 +1,474 @@
+openapi: 3.0.0
+info:
+  title: Vehicle Management API
+  version: 1.0.0
+  description: API для управления коллекцией транспортных средств
+
+servers:
+  - url: http://localhost:8080
+    description: Development server
+  - url: http://localhost:8081/shop
+    description: Shop service server
+
+paths:
+  /vehicles:
+    get:
+      summary: Получить массив транспортных средств
+      tags:
+        - Vihicles
+      description: Возвращает массив объектов с поддержкой фильтрации, сортировки и пагинации
+      parameters:
+        - name: page
+          in: query
+          description: Номер страницы
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: size
+          in: query
+          description: Размер страницы
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: sort
+          in: query
+          description: Поле для сортировки
+          schema:
+            type: string
+            enum: [id, name, creationDate, enginePower, type, fuelType, coordinates_x, coordinates_y] 
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehicle'
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Ошибка валидации данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутрення ошибка сервера
+        '503':
+          description: Сервис недоступен
+    post:
+      tags:
+          - Vihicles
+      summary: Добавить новое транспортное средство
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleInput'
+      responses:
+        '201':
+          description: Объект успешно создан
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Ошибка валидации данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутрення ошибка сервера
+        '503':
+          description: Сервис недоступен
+  /vehicles/{id}:
+    get:
+      summary: Получить транспортное средство по ID
+      tags:
+        - Vihicles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vehicle'
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Объект не найден
+        '500':
+          description: Внутрення ошибка сервера
+        '503':
+          description: Сервис недоступен
+    put:
+      summary: Обновить транспортное средство
+      tags:
+        - Vihicles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleInput'
+      responses:
+        '200':
+          description: Объект успешно обновлен
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Объект не найден
+        '422':
+          description: Ошибка валидации данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутрення ошибка сервера
+        '503':
+          description: Сервис недоступен
+    delete:
+      summary: Удалить транспортное средство
+      tags:
+        - Vihicles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '204':
+          description: Объект успешно удален
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Объект не найден
+        '500':
+          description: Внутрення ошибка сервера
+        '503':
+          description: Сервис недоступен
+
+  /vehicles/sum-engine-power:
+    get:
+      summary: Сумма мощности двигателей
+      tags:
+        - Vihicles
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sum:
+                    type: number
+        '500':
+          description: Внутрення ошибка сервера
+        '503':
+          description: Сервис недоступен
+
+  /vehicles/filter/name/{prefix}:
+    get:
+      summary: Фильтрация по началу имени
+      tags:
+        - Vihicles
+      parameters:
+        - name: prefix
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehicle'
+        '400':
+          description: Некорректный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутрення ошибка сервера
+        '503':
+          description: Сервис недоступен
+  /vehicles/filter/fuel-type/{fuelType}:
+    get:
+      summary: Фильтрация по типу топлива
+      tags:
+        - Vihicles
+      parameters:
+        - name: fuelType
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/FuelType'
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehicle'
+        '400':
+          description: Неверные данные
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутрення ошибка сервера
+        '503':
+          description: Сервис недоступен
+  /shop/search/by-engine-power/{from}/{to}:
+    get:
+      summary: Поиск по диапазону мощности двигателя
+      tags:
+        - Shop
+      parameters:
+        - name: from
+          in: path
+          required: true
+          schema:
+            type: number
+            minimum: 0
+        - name: to
+          in: path
+          required: true
+          schema:
+            type: number
+            minimum: 0
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vehicle'
+        '400':
+          description: Неверные данные
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Ошибка валидации данных
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Внутрення ошибка сервера
+        '503':
+          description: Сервис недоступен
+
+  /shop/add-wheels/{vehicle-id}/{number-of-wheels}:
+    post:
+      summary: Добавить колеса транспортному средству
+      tags:
+        - Shop
+      parameters:
+        - name: vehicle-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - name: number-of-wheels
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Колеса успешно добавлены
+        '400':
+          description: Неверные данные
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Объект не найден
+        '500':
+          description: Внутрення ошибка сервера
+        '503':
+          description: Сервис недоступen
+
+  /shop/get-wheels-count/{vehicle-id}:
+    get:
+      summary: Получить количество колес транспортного средства по ID
+      tags:
+        - Shop
+      parameters:
+        - name: vehicle-id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: ID транспортного средства
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vehicleId:
+                    type: integer
+                    description: ID транспортного средства
+                  wheelsCount:
+                    type: integer
+                    minimum: 0
+                    description: Количество колес
+                required:
+                  - vehicleId
+                  - wheelsCount
+        '400':
+          description: Неверные данные
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Транспортное средство не найдено
+        '500':
+          description: Внутрення ошибка сервера
+        '503':
+          description: Сервис недоступен
+
+components:
+  schemas:
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+        name:
+          type: string
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        creationDate:
+          type: string
+          format: date-time
+        enginePower:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+        type:
+          $ref: '#/components/schemas/VehicleType'
+        fuelType:
+          $ref: '#/components/schemas/FuelType'
+      required:
+        - id
+        - name
+        - coordinates
+        - creationDate
+        - enginePower
+        - fuelType
+
+    VehicleInput:
+      type: object
+      properties:
+        name:
+          type: string
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+        enginePower:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+        type:
+          $ref: '#/components/schemas/VehicleType'
+        fuelType:
+          $ref: '#/components/schemas/FuelType'
+      required:
+        - name
+        - coordinates
+        - enginePower
+        - fuelType
+
+    Coordinates:
+      type: object
+      properties:
+        x:
+          type: integer
+        y:
+          type: integer
+          nullable: false
+      required:
+        - x
+        - y
+
+    VehicleType:
+      type: string
+      enum: [DRONE, SUBMARINE, SPACESHIP]
+
+    FuelType:
+      type: string
+      enum: [KEROSENE, MANPOWER, ANTIMATTER]
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Описание ошибки
+      required:
+        - message
