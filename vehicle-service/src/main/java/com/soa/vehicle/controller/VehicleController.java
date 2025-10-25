@@ -4,9 +4,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,7 +42,7 @@ public class VehicleController {
     private final VehicleService vehicleService;
 
     @GetMapping
-    public ResponseEntity<Page<VehicleDTO>> getAllVehicles(
+    public ResponseEntity<List<VehicleDTO>> getAllVehicles(
             @RequestParam(defaultValue = "1") @Min(1) Integer page,
             @RequestParam(defaultValue = "20") @Min(1) Integer size,
             @RequestParam(required = false) String sort) {
@@ -58,20 +58,22 @@ public class VehicleController {
             pageRequest = PageRequest.of(pageIndex, size);
         }
 
-        Page<VehicleDTO> vehicles = vehicleService.getAllVehicles(pageRequest);
+        Page<VehicleDTO> vehiclesPage = vehicleService.getAllVehicles(pageRequest);
+        List<VehicleDTO> vehicles = vehiclesPage.getContent();
+
         return ResponseEntity.ok(vehicles);
     }
 
     @PostMapping
     public ResponseEntity<Void> createVehicle(@Valid @RequestBody VehicleInputDTO vehicleInput) {
         VehicleDTO created = vehicleService.createVehicle(vehicleInput);
-        
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(created.getId())
                 .toUri();
-                
+
         return ResponseEntity.created(location).build();
     }
 
@@ -85,7 +87,7 @@ public class VehicleController {
     public ResponseEntity<VehicleDTO> updateVehicle(
             @PathVariable @Min(1) Long id,
             @Valid @RequestBody VehicleInputDTO vehicleInput) {
-        
+
         VehicleDTO updated = vehicleService.updateVehicle(id, vehicleInput);
         return ResponseEntity.ok(updated);
     }

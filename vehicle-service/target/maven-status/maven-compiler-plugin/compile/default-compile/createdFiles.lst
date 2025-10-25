@@ -3,10 +3,10 @@ com/soa/vehicle/exception/GlobalExceptionHandler.class
 com/soa/vehicle/config/ModelMapperConfig.class
 com/soa/vehicle/model/enums/FuelType.class
 com/soa/vehicle/repository/VehicleRepository.class
+com/soa/vehicle/config/SecurityConfiguration.class
 com/soa/vehicle/VehicleServiceApplication.class
 com/soa/vehicle/model/Coordinates.class
 com/soa/vehicle/dto/CoordinatesDTO.class
-com/soa/vehicle/model/Vehicle$VehicleBuilder.class
 com/soa/vehicle/model/Vehicle.class
 com/soa/vehicle/client/ShopServiceClient.class
 com/soa/vehicle/dto/ErrorResponseDTO.class
