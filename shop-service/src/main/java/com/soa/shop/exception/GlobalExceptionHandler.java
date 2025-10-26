@@ -49,6 +49,15 @@ public class GlobalExceptionHandler {
         errors.put("message", "Validation failed: " + ex.getMessage());
         return errors;
     }
+
+    @ExceptionHandler(VehicleNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleVehicleNotFoundException(VehicleNotFoundException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("message", ex.getMessage());
+        log.warn("Vehicle not found: {}", ex.getMessage());
+        return errorResponse;
+    }
     
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Map<String, String>> handleResponseStatusException(ResponseStatusException ex) {

@@ -24,5 +24,4 @@ public interface ShopService {
      */
     VehicleWheelDTO getWheelsCount(Long vehicleId);
 
-    List<VehicleDTO> searchByEnginePowerRange(Double from, Double to);
 }
