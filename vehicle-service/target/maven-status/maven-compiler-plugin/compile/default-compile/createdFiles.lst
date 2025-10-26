@@ -12,6 +12,7 @@ com/soa/vehicle/client/ShopServiceClient.class
 com/soa/vehicle/dto/ErrorResponseDTO.class
 com/soa/vehicle/exception/ResourceNotFoundException.class
 com/soa/vehicle/service/impl/VehicleServiceImpl.class
+com/soa/vehicle/config/RestTemplateConfig.class
 com/soa/vehicle/dto/VehicleDTO.class
 com/soa/vehicle/dto/VehicleWheelDTO.class
 com/soa/vehicle/service/VehicleService.class

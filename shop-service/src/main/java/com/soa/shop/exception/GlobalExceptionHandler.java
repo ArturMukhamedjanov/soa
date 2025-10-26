@@ -3,7 +3,7 @@ package com.soa.shop.exception;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -51,21 +50,12 @@ public class GlobalExceptionHandler {
         return errors;
     }
     
-    @ExceptionHandler(WebClientResponseException.class)
-    public ResponseEntity<Map<String, String>> handleWebClientResponseException(WebClientResponseException ex) {
-        log.error("Error from vehicle service: {}", ex.getMessage());
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("message", "Error from vehicle service: " + ex.getStatusText());
-        
-        return ResponseEntity.status(ex.getStatusCode()).body(errorResponse);
-    }
-    
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Map<String, String>> handleResponseStatusException(ResponseStatusException ex) {
         Map<String, String> errorResponse = new HashMap<>();
         errorResponse.put("message", ex.getReason());
         
-        return ResponseEntity.status(ex.getStatus()).body(errorResponse);
+        return ResponseEntity.status(ex.getStatusCode()).body(errorResponse);
     }
     
     @ExceptionHandler(Exception.class)

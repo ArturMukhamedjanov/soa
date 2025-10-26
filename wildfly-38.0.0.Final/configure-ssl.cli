@@ -1,0 +1,13 @@
+# Создайте security realm
+/subsystem=elytron/key-store=vehicle-service-keystore:add(path=certificates/vehicle-service.keystore, relative-to=jboss.server.config.dir, credential-reference={clear-text=password}, type=JKS)
+
+/subsystem=elytron/key-manager=vehicle-service-key-manager:add(key-store=vehicle-service-keystore, credential-reference={clear-text=password})
+
+/subsystem=elytron/server-ssl-context=vehicle-service-ssl-context:add(key-manager=vehicle-service-key-manager, protocols=["TLSv1.2"])
+
+# Настройте HTTPS listener
+/subsystem=undertow/server=default-server/https-listener=https:undefine-attribute(name=security-realm)
+/subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=ssl-context, value=vehicle-service-ssl-context)
+
+# Перезагрузите конфигурацию
+:reload

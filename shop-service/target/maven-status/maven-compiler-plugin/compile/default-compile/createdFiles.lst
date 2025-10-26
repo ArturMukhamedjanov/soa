@@ -1,0 +1,16 @@
+com/soa/shop/model/enums/FuelType.class
+com/soa/shop/dto/CoordinatesDTO.class
+com/soa/shop/service/impl/ShopServiceImpl.class
+com/soa/shop/ShopServiceApplication.class
+com/soa/shop/exception/ResourceNotFoundException.class
+com/soa/shop/dto/VehicleDTO.class
+com/soa/shop/service/ShopService.class
+com/soa/shop/exception/GlobalExceptionHandler.class
+com/soa/shop/model/enums/VehicleType.class
+com/soa/shop/repository/VehicleWheelRepository.class
+com/soa/shop/dto/VehicleWheelDTO.class
+com/soa/shop/config/ModelMapperConfig.class
+com/soa/shop/controller/ShopController.class
+com/soa/shop/model/VehicleWheel.class
+com/soa/shop/model/Coordinates.class
+com/soa/shop/config/SecurityConfiguration.class

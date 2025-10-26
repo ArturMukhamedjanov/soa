@@ -12,6 +12,7 @@
 /Users/arturmuch/Desktop/studying/soa/vehicle-service/src/main/java/com/soa/vehicle/exception/ResourceNotFoundException.java
 /Users/arturmuch/Desktop/studying/soa/vehicle-service/src/main/java/com/soa/vehicle/dto/CoordinatesDTO.java
 /Users/arturmuch/Desktop/studying/soa/vehicle-service/src/main/java/com/soa/vehicle/model/Coordinates.java
+/Users/arturmuch/Desktop/studying/soa/vehicle-service/src/main/java/com/soa/vehicle/config/RestTemplateConfig.java
 /Users/arturmuch/Desktop/studying/soa/vehicle-service/src/main/java/com/soa/vehicle/controller/VehicleController.java
 /Users/arturmuch/Desktop/studying/soa/vehicle-service/src/main/java/com/soa/vehicle/model/Vehicle.java
 /Users/arturmuch/Desktop/studying/soa/vehicle-service/src/main/java/com/soa/vehicle/model/enums/VehicleType.java

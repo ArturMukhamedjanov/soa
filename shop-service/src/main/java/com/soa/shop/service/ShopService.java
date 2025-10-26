@@ -1,6 +1,9 @@
 package com.soa.shop.service;
 
+import com.soa.shop.dto.VehicleDTO;
 import com.soa.shop.dto.VehicleWheelDTO;
+
+import java.util.List;
 
 public interface ShopService {
     
@@ -20,4 +23,6 @@ public interface ShopService {
      * @return the VehicleWheelDTO
      */
     VehicleWheelDTO getWheelsCount(Long vehicleId);
+
+    List<VehicleDTO> searchByEnginePowerRange(Double from, Double to);
 }

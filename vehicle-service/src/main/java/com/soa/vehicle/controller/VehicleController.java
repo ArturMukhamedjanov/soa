@@ -115,4 +115,13 @@ public class VehicleController {
         List<VehicleDTO> vehicles = vehicleService.filterByFuelType(fuelType);
         return ResponseEntity.ok(vehicles);
     }
+
+    @GetMapping("/shop/search/by-engine-power/{from}/{to}")
+    public ResponseEntity<List<VehicleDTO>> searchByEnginePowerRange(
+            @PathVariable @Min(0) Double from,
+            @PathVariable @Min(0) Double to) {
+
+        List<VehicleDTO> vehicles = vehicleService.searchByEnginePowerRange(from, to);
+        return ResponseEntity.ok(vehicles);
+    }
 }

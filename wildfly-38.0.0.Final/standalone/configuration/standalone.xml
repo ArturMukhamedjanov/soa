@@ -341,14 +341,23 @@
                         <implementation type="JKS"/>
                         <file path="application.keystore" relative-to="jboss.server.config.dir"/>
                     </key-store>
+                    <key-store name="vehicle-service-keystore">
+                        <credential-reference clear-text="password"/>
+                        <implementation type="JKS"/>
+                        <file path="certificates/vehicle-service.keystore" relative-to="jboss.server.config.dir"/>
+                    </key-store>
                 </key-stores>
                 <key-managers>
                     <key-manager name="applicationKM" key-store="applicationKS" generate-self-signed-certificate-host="localhost">
                         <credential-reference clear-text="password"/>
                     </key-manager>
+                    <key-manager name="vehicle-service-key-manager" key-store="vehicle-service-keystore">
+                        <credential-reference clear-text="password"/>
+                    </key-manager>
                 </key-managers>
                 <server-ssl-contexts>
                     <server-ssl-context name="applicationSSC" key-manager="applicationKM"/>
+                    <server-ssl-context name="vehicle-service-ssl-context" protocols="TLSv1.2" key-manager="vehicle-service-key-manager"/>
                 </server-ssl-contexts>
             </tls>
             <policy name="jacc">
@@ -476,7 +485,7 @@
             <buffer-cache name="default"/>
             <server name="default-server">
                 <http-listener name="default" socket-binding="http" redirect-socket="https" enable-http2="true"/>
-                <https-listener name="https" socket-binding="https" ssl-context="applicationSSC" enable-http2="true"/>
+                <https-listener name="https" socket-binding="https" ssl-context="vehicle-service-ssl-context" enable-http2="true"/>
                 <host name="default-host" alias="localhost">
                     <location name="/" handler="welcome-content"/>
                     <http-invoker http-authentication-factory="application-http-authentication"/>
