@@ -34,7 +34,7 @@ import com.soa.vehicle.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/vehicles")
+@RequestMapping("vihicle-service/vehicles")
 @RequiredArgsConstructor
 @Validated
 public class VehicleController {
