@@ -2,7 +2,7 @@
 
 # Параметры
 INSTANCE_NUMBER=${1:-1}
-PORT=$((25400 + INSTANCE_NUMBER))
+PORT=$((25410 + INSTANCE_NUMBER))
 LOG_FILE="./logs/vehicle-service-$INSTANCE_NUMBER.log"
 PID_FILE="./pids/vehicle-service-$INSTANCE_NUMBER.pid"
 

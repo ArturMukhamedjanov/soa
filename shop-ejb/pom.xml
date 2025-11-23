@@ -22,6 +22,7 @@
             <groupId>jakarta.ejb</groupId>
             <artifactId>jakarta.ejb-api</artifactId>
             <version>4.0.1</version>
+            <scope>provided</scope>
         </dependency>
         
         <!-- JPA для работы с репозиторием -->
@@ -29,6 +30,29 @@
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>3.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Jakarta Inject -->
+        <dependency>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
+            <version>2.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- SLF4J API for logging -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.9</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+            <version>5.0.0-M1</version>
         </dependency>
 
         <!-- Lombok -->
@@ -37,7 +61,19 @@
             <artifactId>lombok</artifactId>
             <version>1.18.42</version>
         </dependency>
-        
+
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>4.0.0-M1</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.8</version>
+        </dependency>
     </dependencies>
     
     <build>
@@ -49,6 +85,14 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <!-- ДОБАВЛЕНО: annotation processing для Lombok -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.42</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             
@@ -58,6 +102,12 @@
                 <version>3.2.1</version>
                 <configuration>
                     <ejbVersion>4.0</ejbVersion>
+                    <generateClient>true</generateClient>
+                    <clientIncludes>
+                        <clientInclude>com/soa/shop/ejb/ShopServiceRemote.class</clientInclude>
+                        <clientInclude>com/soa/shop/ejb/dto/**</clientInclude>
+                        <clientInclude>com/soa/shop/ejb/exception/**</clientInclude>
+                    </clientIncludes>
                 </configuration>
             </plugin>
         </plugins>

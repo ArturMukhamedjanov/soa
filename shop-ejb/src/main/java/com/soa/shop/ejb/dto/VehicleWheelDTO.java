@@ -1,7 +1,6 @@
-package com.soa.shop.dto;
+package com.soa.shop.ejb.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,12 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VehicleWheelDTO {
-    
-    @NotNull
+public class VehicleWheelDTO implements Serializable{
     private Long vehicleId;
-    
-    @NotNull
-    @Min(0)
     private Integer wheelsCount;
 }

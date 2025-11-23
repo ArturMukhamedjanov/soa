@@ -1,4 +1,4 @@
-package com.soa.shop.model;
+package com.soa.shop.ejb.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +25,6 @@ public class VehicleWheel {
     
     @Min(0)
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, name="wheels_count")
     private Integer wheelsCount;
 }
