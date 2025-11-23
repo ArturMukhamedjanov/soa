@@ -19,7 +19,7 @@ public class VehicleServiceClient {
 
     private final RestTemplate restTemplate;
 
-    private String vehicleServiceBaseUrl = "https://localhost:25401/vihicle-service/vehicles";
+    private String vehicleServiceBaseUrl = "https://localhost:8445/vihicle-service/vehicles";
 
     /**
      * Проверяет существование Vehicle по ID
