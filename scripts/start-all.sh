@@ -3,6 +3,20 @@
 echo "🚀 Starting SOA Infrastructure..."
 echo "=========================================="
 
+# Параметр для количества инстансов vehicle-service
+VEHICLE_INSTANCES=${1:-3}
+
+# Проверяем что параметр число
+if ! [[ "$VEHICLE_INSTANCES" =~ ^[0-9]+$ ]] || [ "$VEHICLE_INSTANCES" -lt 1 ]; then
+    echo "❌ Error: Number of instances must be a positive integer"
+    echo "💡 Usage: $0 [number_of_vehicle_instances]"
+    echo "   Default: 3 instances"
+    exit 1
+fi
+
+echo "📊 Vehicle Service Instances: $VEHICLE_INSTANCES"
+echo "📊 Shop Service Instances: 2 (fixed)"
+
 # Создаем директории
 mkdir -p logs pids
 
@@ -16,18 +30,17 @@ echo "1. Starting Consul..."
 ./scripts/start-consul.sh
 sleep 5
 
-# Запускаем HAProxy
+# Запускаем HAProxy с указанием количества инстансов
 echo ""
 echo "2. Starting HAProxy..."
-./scripts/start-haproxy.sh
+./scripts/start-haproxy.sh "$VEHICLE_INSTANCES"
 sleep 3
 
 # Запускаем инстансы сервиса
 echo ""
 echo "3. Starting Vehicle Service Instances..."
 
-INSTANCES=3
-for i in $(seq 1 $INSTANCES); do
+for i in $(seq 1 $VEHICLE_INSTANCES); do
     echo "   Starting instance $i..."
     ./scripts/start-service.sh "$i"
     sleep 2
@@ -40,12 +53,20 @@ echo ""
 echo "📊 Consul UI:      http://localhost:8500"
 echo "🔗 HAProxy Stats:  http://localhost:1936 (admin:password)"
 echo "🔐 HTTPS Gateway:  https://localhost:8445"
-echo "🔄 HTTP Gateway:   http://localhost:8080"
+echo "🔄 HTTP Gateway:   http://localhost:8081"
 echo ""
-echo "🚗 Vehicle Service Instances:"
-echo "   • Instance 1: https://localhost:25410"
-echo "   • Instance 2: https://localhost:25411" 
-echo "   • Instance 3: https://localhost:25412"
+echo "🚗 Vehicle Service Instances: $VEHICLE_INSTANCES"
+
+# Динамически показываем порты для vehicle-service
+for i in $(seq 1 $VEHICLE_INSTANCES); do
+    PORT=$((25410 + i))
+    echo "   • Instance $i: https://localhost:$PORT"
+done
+
+echo ""
+echo "🛍️  Shop Service Instances: 2"
+echo "   • Instance 1: https://localhost:25402"
+echo "   • Instance 2: https://localhost:25403"
 echo ""
 echo "🔍 Health Checks:"
 echo "   curl -k https://localhost:8445/actuator/health"
