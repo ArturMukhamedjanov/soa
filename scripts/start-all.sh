@@ -15,7 +15,6 @@ if ! [[ "$VEHICLE_INSTANCES" =~ ^[0-9]+$ ]] || [ "$VEHICLE_INSTANCES" -lt 1 ]; t
 fi
 
 echo "📊 Vehicle Service Instances: $VEHICLE_INSTANCES"
-echo "📊 Shop Service Instances: 2 (fixed)"
 
 # Создаем директории
 mkdir -p logs pids
@@ -63,10 +62,6 @@ for i in $(seq 1 $VEHICLE_INSTANCES); do
     echo "   • Instance $i: https://localhost:$PORT"
 done
 
-echo ""
-echo "🛍️  Shop Service Instances: 2"
-echo "   • Instance 1: https://localhost:25402"
-echo "   • Instance 2: https://localhost:25403"
 echo ""
 echo "🔍 Health Checks:"
 echo "   curl -k https://localhost:8445/actuator/health"
